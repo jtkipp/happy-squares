@@ -1,0 +1,13 @@
+.cell {
+  height: 5px;
+  width: 5px;
+  display: table-cell;
+}
+
+.alive {
+  background-color: darkseagreen
+}
+
+.not-alive {
+  background-color: darkslategrey
+}
