@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { Cell, GetCellRenderCount } from './components/Cell';
 
+var v = true;
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -25,29 +26,48 @@ class App extends React.Component {
     setTimeout(this.evolve, d < 200 ? 200.0 - d :100.0)
   }
   render() {
+    v = !v;
     var elems = []
     for (var i = 0; i < this.state.rows; i++) {
       var row = []
       for (var j = 0; j < this.state.cols; j++) {
         var alive = this.state.board[i][j]
-        row.push((<Cell key={j} alive={alive}/>))
+        var style = {
+          height: '5px',
+          width: '5px',
+          display: 'table-cell',
+        }
+        if (alive) {
+          style.backgroundColor = 'darkseagreen'
+        } else {
+          style.backgroundColor = 'darkslategrey'
+        }
+        row.push((<Cell board={this.state.board} i={i} j={j}/>))
       }
-      elems.push((<div key={i} style={{display: 'table-row'}}>{row}</div>))
+      elems.push((<div style={{display: 'table-row'}}>{row}</div>))
     }
     return (
       <header className="App-header">
       <FlexCenter>
-          <div style={{display: 'table'}}>
-            {elems}
-          </div>
+          <Breaker value={v}>
+            <div style={{display: 'table'}}>
+              {elems}
+            </div>
+          </Breaker>
           <div>
-            <p>Cell renders: {GetCellRenderCount()}</p>
             <p>Average render time: {getAvg().toFixed(0)} ms</p>
           </div>
       </FlexCenter>
       </header>
     );
   }
+}
+
+function Breaker(props) {
+  if (props.value) {
+    return (<div>{props.children}</div>)
+  }
+  return (<p style={{margin: 0}}>{props.children}</p>)
 }
 
 function getDimensions() {

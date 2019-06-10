@@ -7,19 +7,14 @@ export function GetCellRenderCount() {
   return cellRenderCount
 }
 
-export class Cell extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    return this.props.alive !== nextProps.alive;
-  }
-
-  render() {
+export function Cell(props) {
     cellRenderCount++
     let className = 'cell'
-    if (this.props.alive) {
+    let alive = props.board[props.i][props.j]
+    if (alive) {
       className += ' alive'
     } else {
       className += ' not-alive'
     }
     return (<div className={className}/>);
   }
-}
